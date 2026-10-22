@@ -14,10 +14,12 @@
     --line: #E9E3E1; --line2: #CFC9CB; --side: #E7E6E8; --side-ink: #4A464C;
     --red: #A3242F; --red-hover: #8B1E2D; --red-soft: #F8E7E8;
     --blue: #2457A6; --blue-hover: #1C4687; --blue-soft: #E6EEFA;
+    --grey: #3B3A40; --grey-hover: #222125; --grey-soft: #E9E9ED;
     --accent: var(--ink); --accent-hover: #000; --accent-soft: var(--side);
   }
   body[data-role="gov"] { --accent: var(--red); --accent-hover: var(--red-hover); --accent-soft: var(--red-soft); }
   body[data-role="upch"] { --accent: var(--blue); --accent-hover: var(--blue-hover); --accent-soft: var(--blue-soft); }
+  body[data-role="staff"] { --accent: var(--grey); --accent-hover: var(--grey-hover); --accent-soft: var(--grey-soft); }
   * { box-sizing: border-box; }
   html { font-size: 15px; }
   body {
@@ -43,9 +45,10 @@
   .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--side-ink); }
   .hero h1 { font-family: Unbounded, Manrope, sans-serif; font-weight: 500; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -.02em; margin: 14px 0 16px; max-width: 14ch; position: relative; z-index: 1; text-wrap: balance; }
   .hero p { color: var(--side-ink); font-size: 16px; line-height: 1.55; max-width: 40ch; margin: 0; position: relative; z-index: 1; }
-  .blob { position: absolute; right: -120px; bottom: -150px; width: 340px; height: 340px; opacity: .9; animation: morph 16s ease-in-out infinite; transition: background .5s ease; background: linear-gradient(135deg, #C2414B 0%, #C2414B 48%, #3F6FC4 52%, #3F6FC4 100%); }
+  .blob { position: absolute; right: -120px; bottom: -150px; width: 340px; height: 340px; opacity: .9; animation: morph 16s ease-in-out infinite; transition: background .5s ease; background: linear-gradient(135deg, #C2414B 0%, #C2414B 33%, #3F6FC4 34%, #3F6FC4 66%, #6E6D75 67%, #6E6D75 100%); }
   body[data-role="gov"] .blob { background: linear-gradient(135deg, #C2414B, #82101C); }
   body[data-role="upch"] .blob { background: linear-gradient(135deg, #5B8BDB, #1C4687); }
+  body[data-role="staff"] .blob { background: linear-gradient(135deg, #A9A8B0, #3B3A40); }
   @keyframes morph {
     0%, 100% { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; transform: rotate(0deg) scale(1) }
     33% { border-radius: 63% 37% 41% 59% / 56% 62% 38% 44%; transform: rotate(40deg) scale(1.06) }
@@ -60,7 +63,7 @@
   .sub { color: var(--muted); margin: 0 0 24px; font-size: 14px; }
   .step { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 10px; }
 
-  .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 26px; }
+  .roles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 26px; }
   .role { position: relative; text-align: left; background: var(--surface); border: 1.5px solid var(--line2); border-radius: 20px; padding: 16px 16px 16px; transition: border-color .2s, background .2s, box-shadow .2s; }
   .role:hover { border-color: var(--muted); }
   .role .ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 12px; }
@@ -71,6 +74,10 @@
   .role .check svg { width: 12px; height: 12px; opacity: 0; }
   .role[data-r="gov"] .ic { background: var(--red-soft); color: var(--red); }
   .role[data-r="upch"] .ic { background: var(--blue-soft); color: var(--blue); }
+  .role[data-r="staff"] .ic { background: var(--grey-soft); color: var(--grey); }
+  .role[aria-checked="true"][data-r="staff"] { border-color: var(--grey); background: var(--grey-soft); box-shadow: 0 8px 20px -12px rgba(30,30,40,.55); }
+  .role[aria-checked="true"][data-r="staff"] .check { background: var(--grey); border-color: var(--grey); }
+  body[data-role="staff"] .submit:hover { box-shadow: 0 10px 24px -10px rgba(30,30,40,.65); }
   .role[aria-checked="true"][data-r="gov"] { border-color: var(--red); background: var(--red-soft); box-shadow: 0 8px 20px -12px rgba(163,36,47,.55); }
   .role[aria-checked="true"][data-r="upch"] { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 8px 20px -12px rgba(36,87,166,.55); }
   .role[aria-checked="true"] .ic { background: #fff; }
@@ -113,25 +120,26 @@
     .card { padding: 24px 20px; border-radius: 24px; }
     .top { padding: 16px; }
   }
-  @media (max-width: 420px) { .roles { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .roles { grid-template-columns: 1fr; } .role { padding-right: 40px; } }
 </style>
 </head>
 <body>
   <header class="top">
     <img class="logo" src="./favicon.svg" alt="" />
-    <div class="brand">ФГИС УПЧ<small>Единый вход в аналитические панели</small></div>
+    <div class="brand">ФГИС УПЧ<small>Единый вход в рабочие панели</small></div>
   </header>
 
   <main>
     <section class="hero page-enter" aria-hidden="false">
       <div>
         <div class="eyebrow">Защита прав человека</div>
-        <h1>Одна точка входа, две рабочие панели</h1>
-        <p>Выберите свою роль. Представители ведомств и губернаторы попадают на тепловую карту регионов, сотрудники аппарата Уполномоченного попадают в панель работы с обращениями.</p>
+        <h1>Одна точка входа, три рабочие панели</h1>
+        <p>Выберите свою роль. Представители ведомств и губернаторы попадают на тепловую карту регионов, руководители аппарата Уполномоченного в аналитическую панель, сотрудники в кабинет для ответов на жалобы.</p>
       </div>
       <div class="legend">
         <span class="pill"><span class="dot" style="background:#A3242F"></span>Ведомства и регионы</span>
-        <span class="pill"><span class="dot" style="background:#2457A6"></span>Аппарат УПЧ</span>
+        <span class="pill"><span class="dot" style="background:#2457A6"></span>Руководство УПЧ</span>
+        <span class="pill"><span class="dot" style="background:#3B3A40"></span>Сотрудники УПЧ</span>
       </div>
       <div class="blob" aria-hidden="true"></div>
     </section>
@@ -152,8 +160,14 @@
           <button type="button" class="role" role="radio" aria-checked="false" data-r="upch">
             <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
-            <b>Представитель УПЧ</b>
-            <span>Сотрудники аппарата Уполномоченного</span>
+            <b>Руководитель УПЧ</b>
+            <span>Аналитика аппарата Уполномоченного</span>
+          </button>
+          <button type="button" class="role" role="radio" aria-checked="false" data-r="staff">
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+            <b>Сотрудник УПЧ</b>
+            <span>Ответы на жалобы граждан</span>
           </button>
         </div>
 
@@ -186,7 +200,8 @@
 <script>
   var TARGETS = {
     gov: { url: 'https://daria71321-netizen.github.io/fgis-upch-map/', label: 'Войти в карту ведомств' },
-    upch: { url: 'https://upch-analytics.github.io/panel/', label: 'Войти в панель УПЧ' }
+    upch: { url: 'https://upch-analytics.github.io/panel/', label: 'Войти в панель УПЧ' },
+    staff: { url: 'https://daria71321-netizen.github.io/fgis-upch-cabinet/', label: 'Войти в кабинет сотрудника' }
   };
   var role = null;
   var body = document.body;
@@ -221,7 +236,7 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var login = document.getElementById('login').value.trim();
-    if (!role) return fail('Выберите роль: ведомство или УПЧ', roles[0]);
+    if (!role) return fail('Выберите роль: ведомство, руководитель или сотрудник УПЧ', roles[0]);
     if (!login) return fail('Введите логин', document.getElementById('login'));
     if (!pwd.value) return fail('Введите пароль', pwd);
     try { sessionStorage.setItem('fgis-upch-user', JSON.stringify({ login: login, role: role })); } catch (x) {}
