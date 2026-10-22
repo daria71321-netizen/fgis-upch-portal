@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet" />
+<title>ФГИС УПЧ: вход</title>
+<style>
+  :root {
+    --bg: #F3EFED; --surface: #FFFFFF; --ink: #222023; --muted: #615A64;
+    --line: #E9E3E1; --line2: #CFC9CB; --side: #E7E6E8; --side-ink: #4A464C;
+    --red: #A3242F; --red-hover: #8B1E2D; --red-soft: #F8E7E8;
+    --blue: #2457A6; --blue-hover: #1C4687; --blue-soft: #E6EEFA;
+    --accent: var(--ink); --accent-hover: #000; --accent-soft: var(--side);
+  }
+  body[data-role="gov"] { --accent: var(--red); --accent-hover: var(--red-hover); --accent-soft: var(--red-soft); }
+  body[data-role="upch"] { --accent: var(--blue); --accent-hover: var(--blue-hover); --accent-soft: var(--blue-soft); }
+  * { box-sizing: border-box; }
+  html { font-size: 15px; }
+  body {
+    margin: 0; min-height: 100vh; font-family: Manrope, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(1100px 520px at 90% -10%, rgba(163,36,47,.07), transparent 60%),
+      radial-gradient(1000px 520px at -10% 110%, rgba(36,87,166,.07), transparent 60%);
+    background-attachment: fixed;
+    display: flex; flex-direction: column;
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .top { display: flex; align-items: center; gap: 12px; padding: 20px 28px; }
+  .logo { width: 36px; height: 36px; display: block; }
+  .brand { font-family: Unbounded, Manrope, sans-serif; font-weight: 500; font-size: 15px; letter-spacing: -.01em; }
+  .brand small { display: block; font-family: Manrope, sans-serif; font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+
+  main { flex: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 28px; align-items: center; max-width: 1180px; width: 100%; margin: 0 auto; padding: 8px 28px 40px; }
+  .hero { position: relative; overflow: hidden; background: var(--side); border-radius: 28px; padding: 44px 40px; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; }
+  .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--side-ink); }
+  .hero h1 { font-family: Unbounded, Manrope, sans-serif; font-weight: 500; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -.02em; margin: 14px 0 16px; max-width: 14ch; position: relative; z-index: 1; text-wrap: balance; }
+  .hero p { color: var(--side-ink); font-size: 16px; line-height: 1.55; max-width: 40ch; margin: 0; position: relative; z-index: 1; }
+  .blob { position: absolute; right: -120px; bottom: -150px; width: 340px; height: 340px; opacity: .9; animation: morph 16s ease-in-out infinite; transition: background .5s ease; background: linear-gradient(135deg, #C2414B 0%, #C2414B 48%, #3F6FC4 52%, #3F6FC4 100%); }
+  body[data-role="gov"] .blob { background: linear-gradient(135deg, #C2414B, #82101C); }
+  body[data-role="upch"] .blob { background: linear-gradient(135deg, #5B8BDB, #1C4687); }
+  @keyframes morph {
+    0%, 100% { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; transform: rotate(0deg) scale(1) }
+    33% { border-radius: 63% 37% 41% 59% / 56% 62% 38% 44%; transform: rotate(40deg) scale(1.06) }
+    66% { border-radius: 37% 63% 52% 48% / 38% 46% 54% 62%; transform: rotate(-25deg) scale(.96) }
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; position: relative; z-index: 1; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.75); backdrop-filter: blur(12px); border-radius: 999px; padding: 7px 14px 7px 10px; font-size: 13px; font-weight: 600; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .card { background: var(--surface); border-radius: 28px; padding: 36px; box-shadow: 0 1px 2px rgba(40,20,25,.04), 0 18px 48px -18px rgba(60,20,30,.18); }
+  .card h2 { font-family: Unbounded, Manrope, sans-serif; font-weight: 500; font-size: 24px; letter-spacing: -.02em; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 24px; font-size: 14px; }
+  .step { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 10px; }
+
+  .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 26px; }
+  .role { position: relative; text-align: left; background: var(--surface); border: 1.5px solid var(--line2); border-radius: 20px; padding: 16px 16px 16px; transition: border-color .2s, background .2s, box-shadow .2s; }
+  .role:hover { border-color: var(--muted); }
+  .role .ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 12px; }
+  .role .ic svg { width: 20px; height: 20px; }
+  .role b { display: block; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .role span { display: block; font-size: 13px; line-height: 18px; color: var(--muted); }
+  .role .check { position: absolute; top: 14px; right: 14px; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--line2); display: grid; place-items: center; transition: .2s; }
+  .role .check svg { width: 12px; height: 12px; opacity: 0; }
+  .role[data-r="gov"] .ic { background: var(--red-soft); color: var(--red); }
+  .role[data-r="upch"] .ic { background: var(--blue-soft); color: var(--blue); }
+  .role[aria-checked="true"][data-r="gov"] { border-color: var(--red); background: var(--red-soft); box-shadow: 0 8px 20px -12px rgba(163,36,47,.55); }
+  .role[aria-checked="true"][data-r="upch"] { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 8px 20px -12px rgba(36,87,166,.55); }
+  .role[aria-checked="true"] .ic { background: #fff; }
+  .role[aria-checked="true"][data-r="gov"] .check { background: var(--red); border-color: var(--red); }
+  .role[aria-checked="true"][data-r="upch"] .check { background: var(--blue); border-color: var(--blue); }
+  .role[aria-checked="true"] .check svg { opacity: 1; }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 6px 4px; }
+  .input-wrap { position: relative; }
+  .field input { width: 100%; border: 1.5px solid var(--line2); border-radius: 999px; padding: 12px 18px; font-size: 15px; background: #fff; transition: border-color .2s; }
+  .field input:hover { border-color: var(--muted); }
+  .field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .eye { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); }
+  .eye:hover { background: var(--bg); }
+  .eye svg { width: 18px; height: 18px; }
+  .field input[type="password"], .field input#password { padding-right: 52px; }
+
+  .err { min-height: 20px; font-size: 13px; color: #B3261E; margin: 2px 4px 10px; }
+  .submit { width: 100%; border: 0; border-radius: 999px; padding: 14px 20px; font-size: 15px; font-weight: 700; color: #fff; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: background .2s, box-shadow .2s, transform .1s; }
+  .submit:hover { background: var(--accent-hover); }
+  body[data-role="gov"] .submit:hover { box-shadow: 0 10px 24px -10px rgba(163,36,47,.65); }
+  body[data-role="upch"] .submit:hover { box-shadow: 0 10px 24px -10px rgba(36,87,166,.65); }
+  .submit:active { transform: translateY(1px); }
+  .submit svg { width: 18px; height: 18px; }
+  .note { margin: 18px 4px 0; font-size: 12.5px; line-height: 18px; color: var(--muted); }
+
+  footer { text-align: center; font-size: 12.5px; color: var(--muted); padding: 0 28px 24px; }
+
+  .page-enter { animation: rise .5s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes rise { from { opacity: .001; transform: translateY(10px) } to { opacity: 1; transform: none } }
+  @keyframes shake { 0%,100% { transform: none } 25% { transform: translateX(-5px) } 75% { transform: translateX(5px) } }
+  .shake { animation: shake .3s ease; }
+  @media (prefers-reduced-motion: reduce) { .blob, .page-enter, .shake { animation: none } }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; padding: 4px 16px 32px; gap: 16px; }
+    .hero { min-height: 0; padding: 28px 24px; gap: 28px; }
+    .blob { width: 240px; height: 240px; right: -80px; bottom: -90px; }
+    .card { padding: 24px 20px; border-radius: 24px; }
+    .top { padding: 16px; }
+  }
+  @media (max-width: 420px) { .roles { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <header class="top">
+    <img class="logo" src="./favicon.svg" alt="" />
+    <div class="brand">ФГИС УПЧ<small>Единый вход в аналитические панели</small></div>
+  </header>
+
+  <main>
+    <section class="hero page-enter" aria-hidden="false">
+      <div>
+        <div class="eyebrow">Защита прав человека</div>
+        <h1>Одна точка входа, две рабочие панели</h1>
+        <p>Выберите свою роль. Представители ведомств и губернаторы попадают на тепловую карту регионов, сотрудники аппарата Уполномоченного попадают в панель работы с обращениями.</p>
+      </div>
+      <div class="legend">
+        <span class="pill"><span class="dot" style="background:#A3242F"></span>Ведомства и регионы</span>
+        <span class="pill"><span class="dot" style="background:#2457A6"></span>Аппарат УПЧ</span>
+      </div>
+      <div class="blob" aria-hidden="true"></div>
+    </section>
+
+    <section class="card page-enter" style="animation-delay:.08s">
+      <h2>Вход в систему</h2>
+      <p class="sub">Демонстрационная версия для хакатона</p>
+
+      <form id="form" novalidate>
+        <p class="step" id="role-label">1. Кто вы</p>
+        <div class="roles" role="radiogroup" aria-labelledby="role-label" id="roles">
+          <button type="button" class="role" role="radio" aria-checked="false" data-r="gov">
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 8 5H4z"/></svg></span>
+            <b>Представитель ведомства</b>
+            <span>Губернаторы, министерства и ведомства</span>
+          </button>
+          <button type="button" class="role" role="radio" aria-checked="false" data-r="upch">
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <b>Представитель УПЧ</b>
+            <span>Сотрудники аппарата Уполномоченного</span>
+          </button>
+        </div>
+
+        <p class="step">2. Учетные данные</p>
+        <div class="field">
+          <label for="login">Логин</label>
+          <input id="login" name="login" autocomplete="username" placeholder="Например, ivanov" />
+        </div>
+        <div class="field">
+          <label for="password">Пароль</label>
+          <div class="input-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Введите пароль" />
+            <button type="button" class="eye" id="eye" aria-label="Показать пароль">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="err" id="err" role="alert"></div>
+        <button type="submit" class="submit" id="submit">
+          <span id="submit-text">Войти</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+        <p class="note">Это демоверсия: подойдут любые логин и пароль. Данные никуда не отправляются.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer>ФГИС УПЧ · прототип для хакатона, 2026</footer>
+
+<script>
+  var TARGETS = {
+    gov: { url: 'https://daria71321-netizen.github.io/fgis-upch-map/', label: 'Войти в карту ведомств' },
+    upch: { url: 'https://upch-analytics.github.io/panel/', label: 'Войти в панель УПЧ' }
+  };
+  var role = null;
+  var body = document.body;
+  var roles = Array.prototype.slice.call(document.querySelectorAll('.role'));
+  var err = document.getElementById('err');
+  var form = document.getElementById('form');
+
+  function setRole(r) {
+    role = r;
+    body.setAttribute('data-role', r);
+    roles.forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.r === r)); });
+    document.getElementById('submit-text').textContent = TARGETS[r].label;
+    if (err.textContent.indexOf('роль') !== -1) err.textContent = '';
+  }
+  roles.forEach(function (b) { b.addEventListener('click', function () { setRole(b.dataset.r); }); });
+
+  var eye = document.getElementById('eye');
+  var pwd = document.getElementById('password');
+  eye.addEventListener('click', function () {
+    var show = pwd.type === 'password';
+    pwd.type = show ? 'text' : 'password';
+    eye.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль');
+  });
+
+  function fail(msg, el) {
+    err.textContent = msg;
+    var c = document.querySelector('.card');
+    c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake');
+    if (el) el.focus();
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var login = document.getElementById('login').value.trim();
+    if (!role) return fail('Выберите роль: ведомство или УПЧ', roles[0]);
+    if (!login) return fail('Введите логин', document.getElementById('login'));
+    if (!pwd.value) return fail('Введите пароль', pwd);
+    try { sessionStorage.setItem('fgis-upch-user', JSON.stringify({ login: login, role: role })); } catch (x) {}
+    err.textContent = '';
+    document.getElementById('submit-text').textContent = 'Входим...';
+    window.location.href = TARGETS[role].url;
+  });
+</script>
+</body>
+</html>
